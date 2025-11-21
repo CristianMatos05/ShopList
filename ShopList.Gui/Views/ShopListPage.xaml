@@ -59,7 +59,7 @@
               BackgroundColor="LightGrey"
               VerticalOptions="Center"
               FontSize="Medium"   
-              Text="{Binding CatidadAComprar}"
+              Text="{Binding CantidadAComprar}"
               />
 
             <Button
