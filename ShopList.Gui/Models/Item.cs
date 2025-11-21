@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Maui.Layouts;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,6 +14,7 @@ namespace ShopList.Gui.Models
         public string Nombre { get; set; } = string.Empty;
 
         public int Cantidad { get; set; }
+        public bool Comprado { get; set; } =false;
 
         public override string ToString()
         {
