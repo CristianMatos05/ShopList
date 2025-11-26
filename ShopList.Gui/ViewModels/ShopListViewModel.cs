@@ -20,17 +20,16 @@ namespace ShopList.Gui.ViewModels
 
         [ObservableProperty]
         private string _nombreDelArticulo = string.Empty;
+
         [ObservableProperty]
         private int _cantidadAComprar = 1;
+
+        [ObservableProperty]
+        private Item? _id = null;
 
 
 
         public ObservableCollection<Item> Items { get; }
-
-
-       
-
-
 
         public ShopListViewModel()
         {
@@ -64,9 +63,36 @@ namespace ShopList.Gui.ViewModels
         }
 
         [RelayCommand]
-        public void EliminarShopList()
+        public void EliminarShopListItem()
         {
+            if (Id == null)
+                return;
 
+            // Obtener índice del elemento seleccionado
+            int indice = Items.IndexOf(Id);
+
+            // Determinar nuevo elemento seleccionado
+            Item? nuevoSeleccionado = null;
+
+            if (Items.Count > 1)
+            {
+                if (indice < Items.Count - 1)
+                {
+                    // Seleccionar el siguiente
+                    nuevoSeleccionado = Items[indice + 1];
+                }
+                else
+                {
+                    // Si era el último, seleccionar el anterior
+                    nuevoSeleccionado = Items[indice - 1];
+                }
+            }
+
+            // Eliminar el item actual
+            Items.Remove(Id);
+
+            // Actualizar selección
+            Id = nuevoSeleccionado;
         }
 
 

@@ -5,7 +5,8 @@
              xmlns:model="clr-namespace:ShopList.Gui.Models"
              x:DataType="viewmodel:ShopListViewModel"
              x:Class="ShopList.Gui.Views.ShopListPage"
-             Title="Lista De Compras">
+             Title="Lista De Compras"  >
+    
     <Grid
         RowDefinitions="Auto,*"
         Padding="8"
@@ -74,7 +75,8 @@
              Text="X"
              Grid.Row="1"
              Grid.Column="2"
-             FontSize="Medium"   
+             FontSize="Medium" 
+             Command="{Binding EliminarShopListItemCommand}"
              />
 
 
@@ -90,7 +92,8 @@
             EmptyView="AUN NO SE HAN REGISTRADO PRODUCTOS"
             BackgroundColor="LightBlue"
             SelectionMode="Single"
-            
+            SelectedItem="{Binding Id}"
+             
             >
 
             <CollectionView.ItemTemplate>
