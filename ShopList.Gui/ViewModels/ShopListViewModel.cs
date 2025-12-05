@@ -1,9 +1,12 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using ShopList.Gui.Models;
+using ShopList.Gui.Persistence;
+
 //using System;
 //using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 /*using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -28,38 +31,70 @@ namespace ShopList.Gui.ViewModels
         private Item? _id = null;
 
 
+        [ObservableProperty]
+        private ObservableCollection<Item>? _items = null;
 
-        public ObservableCollection<Item> Items { get; }
+        private ShopListDataBase? _database = null;
 
-        public ShopListViewModel()
+        public ShopListViewModel()       
         {
+            _database = new ShopListDataBase();
             Items = new ObservableCollection<Item>();
-            CargarDatos();
+            GetItems();
+            //CargarDatos();
+
             //AgregarShopListItemCommand = new Command(AgregarShopListItem);
+
+
+
+        }
+
+
+
+        private  async void GetItems()
+        {
+
+           IEnumerable<Item> itemsFromDb = await _database.GetAllItemsAsync();
+
+           Items=new ObservableCollection<Item>(itemsFromDb);
+
+
+
+            /* 
+            foreach (Item item in itemsFromDb)
+            {
+                Items.Add(item);
+            }*/
         }
 
         [RelayCommand]
 
-        public void AgregarShopListItem()
+        public async Task AgregarShopListItem()
         {
             if (string.IsNullOrEmpty(NombreDelArticulo) || CantidadAComprar <= 0)
             {
                 return;
             }
 
-            Random generador = new Random();    
+           // Random generador = new Random();    
 
             var item = new Item
             {
-                Id =generador.Next(),
+               // Id =generador.Next(),
                 Nombre = NombreDelArticulo,
                 Cantidad = CantidadAComprar,
                 Comprado =false,
             };
 
-            Items.Add(item);
-            NombreDelArticulo= string.Empty;
+
+            await _database.SaveItemAsync(item);
+            // Items.Add(item);
+
+            GetItems();
+            NombreDelArticulo = string.Empty;
             CantidadAComprar = 1;
+            Id = item;
+
         }
 
         [RelayCommand]
@@ -93,9 +128,9 @@ namespace ShopList.Gui.ViewModels
 
             // Actualizar selección
             Id = nuevoSeleccionado;
+
         }
-
-
+        
         private void CargarDatos()
         {
 
